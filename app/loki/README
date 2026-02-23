@@ -1,0 +1,32 @@
+- helm repo add grafana https://grafana.github.io/helm-charts
+Tk : admin
+MK : 
+* install loki
+Khi nào cần reset hoặc deploy lại Loki?
+❌ KHÔNG cần deploy lại Loki khi:
+Chỉ thay đổi Fluent Bit (log format, parser, filter)
+
+Cập nhật nhãn hoặc format dòng log
+
+Thay đổi query trên Grafana
+
+✅ CẦN deploy lại Loki khi:
+Thay đổi storage backend
+
+#Muốn reset toàn bộ log (xóa dữ liệu cũ, như bạn hỏi trước đó)
+
+#Đổi cấu hình như chunk_size, retention, limits_config
+- helm uninstall loki -n observability
+- kubectl delete pvc -n observability --selector=app.kubernetes.io/name=loki
+- helm install loki grafana/loki -n observability -f loki-values.yaml
+- helm install --values values.yaml loki grafana/loki
+
+
+
+* Chỉnh sửa cấu hình Fluent Bit
+* Không cần khởi động lại Loki khi bạn chỉ thay đổi Fluent Bit
+# Fluent Bit chỉ là log forwarder, có thể cập nhật độc lập
+- helm upgrade --install fluent-bit fluent/fluent-bit  -f fluent-bit-values.yaml
+
+
+

@@ -1,0 +1,44 @@
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: test-performance
+    namespace: dev
+    labels:
+      app: test-performance
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
+        app: test-performance
+    template:
+      metadata:
+        labels:
+          app: test-performance
+      spec:
+        containers:
+        - name: test-performance
+          image: nguyenphu/testperformance:v7
+          env:
+          - name: TZ
+            value: "Asia/Ho_Chi_Minh"
+          ports:
+          - containerPort: 5000
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: uploads
+              mountPath: /app/wwwroot/uploads
+            - name: log
+              mountPath: /app/logs
+        volumes:
+          - name: uploads
+            persistentVolumeClaim:
+              claimName: uploads-pvc
+          - name: log
+            persistentVolumeClaim:
+              claimName: log-pvc

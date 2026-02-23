@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: call-api-job
+spec:
+  schedule: "*/1 * * * *"   # chạy mỗi phút
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostNetwork: true
+          containers:
+          - name: call-api
+            image: curlimages/curl:latest   # dùng image có curl
+            args:
+              - /bin/sh
+              - -c
+              - >
+                curl -X GET "http://localhost:5001/api/Cronjob" 
+                -H "Content-Type: application/json"
+          restartPolicy: OnFailure
