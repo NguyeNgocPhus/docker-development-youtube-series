@@ -19,10 +19,6 @@ exporters:
     path: /etc/otelcol-contrib/.data/output_traces.log
   file/metrics:
     path: /etc/otelcol-contrib/.data/output_metrics.log
-  otlp/tempo:
-    endpoint: "http://tempo:4317"
-    tls:
-      insecure: true
   
   # Option A: Prometheus to scrape metrics from Otel
   # prometheus:
